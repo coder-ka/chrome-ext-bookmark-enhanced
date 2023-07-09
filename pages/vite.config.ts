@@ -1,11 +1,12 @@
 import { defineConfig } from "vite";
 import reactRefresh from "@vitejs/plugin-react-refresh";
+import macrosPlugin from "vite-plugin-babel-macros";
 
 import path, { resolve } from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [reactRefresh()],
+  plugins: [reactRefresh(), macrosPlugin()],
   base: "",
   build: {
     outDir: path.resolve(__dirname, "../dist/pages"),

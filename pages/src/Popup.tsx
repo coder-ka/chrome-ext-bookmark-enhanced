@@ -1,16 +1,9 @@
 import React, { useEffect, useState } from "react";
 import debounce from "just-debounce";
 import { Bookmark, LocalData } from "./schema";
-import { Memopad } from "./Memopad";
-// import { buttonStyle } from "./buttons.css";
+import { MemoEditor } from "./MemoEditor";
 
 function Popup() {
-  // function setPageBackgroundColor() {
-  //   chrome.storage.sync.get("color", ({ color }) => {
-  //     document.body.style.backgroundColor = color;
-  //   });
-  // }
-
   const [currentTab, setCurrentTab] = useState<chrome.tabs.Tab>();
 
   useEffect(() => {
@@ -76,34 +69,20 @@ function Popup() {
       <div className="mt-2">
         Memo
         <div className="flex">
-          <Memopad
+          <MemoEditor
             className="flex-1 p-2 border border-gray-400 rounded"
             defaultContent={bookmark.content}
-            onChange={(content) => {
+            onChange={(content, tags) => {
               setBookmark({
                 ...bookmark,
                 content,
+                tags,
               });
             }}
-          ></Memopad>
+          ></MemoEditor>
         </div>
       </div>
     </div>
-
-    // <button
-    //   className={buttonStyle}
-    //   onClick={async () => {
-    //     let [tab] = await chrome.tabs.query({
-    //       active: true,
-    //       currentWindow: true,
-    //     });
-
-    //     chrome.scripting.executeScript({
-    //       target: { tabId: tab.id! },
-    //       function: setPageBackgroundColor,
-    //     });
-    //   }}
-    // ></button>
   );
 }
 
