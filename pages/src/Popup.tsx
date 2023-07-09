@@ -27,6 +27,7 @@ function Popup() {
           url: currentTab.url,
           title: currentTab.title || "",
           tags: [],
+          updated: new Date().toISOString(),
         };
 
         setBookmark(bookmark);
@@ -36,6 +37,7 @@ function Popup() {
 
   const saveBookmark = debounce((bookmark: Bookmark) => {
     chrome.storage.local.get("bookmarks", (data: LocalData) => {
+      bookmark.updated = new Date().toISOString();
       const bookmarks = data.bookmarks || {};
       bookmarks[bookmark.url] = bookmark;
       chrome.storage.local.set({ bookmarks }, () => {});
@@ -50,6 +52,17 @@ function Popup() {
     <div>...loading</div>
   ) : (
     <div className="w-[500px] p-5 ">
+      <div className="flex">
+        <a
+          href=""
+          className="ml-auto text-blue-500"
+          onClick={() => {
+            chrome.runtime.openOptionsPage();
+          }}
+        >
+          View saved items
+        </a>
+      </div>
       <div>
         Title
         <div className="flex">

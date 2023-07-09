@@ -11,6 +11,7 @@ export interface Bookmark {
   url: string;
   content?: string;
   tags: Tag[];
+  updated: string; //ISO8601
 }
 
 export interface Tag {
