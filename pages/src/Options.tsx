@@ -82,7 +82,7 @@ function Options() {
         <div className="flex flex-col gap-y-2">
           {groupsByTag?.map((group) => (
             <div className="border border-gray-400 rounded p-2">
-              <div className="text-pink-500 italic font-bold text-lg mb-1">
+              <div className="text-pink-500 font-bold text-lg mb-1">
                 {group.tag.name}
               </div>
               <div className="flex flex-col">
