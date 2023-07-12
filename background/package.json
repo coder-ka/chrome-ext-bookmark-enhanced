@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite build --watch --mode development",
-    "build": "tsc && vite build"
+    "build": "vite build"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.145",
