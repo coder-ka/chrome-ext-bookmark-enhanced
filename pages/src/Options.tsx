@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Bookmark, Bookmarks, LocalData, Tag } from "./schema";
 
 function Options() {
@@ -75,39 +75,72 @@ function Options() {
     }[]
   );
 
+  const url = useRef(new URL(location.href));
+
+  const [searchValue, setSearchValue] = useState(
+    url.current.searchParams.get("search")
+  );
+
+  useEffect(() => {
+    if (searchValue === null || searchValue === "") {
+      url.current.searchParams.delete("search");
+    } else {
+      url.current.searchParams.set("search", searchValue);
+    }
+
+    history.replaceState({ searchValue }, "", url.current.toString());
+  }, [searchValue]);
+
   return (
     <div className="p-4 flex flex-col gap-y-2">
       <div>
-        <div className="mb-2">Tags</div>
+        <div className="mb-2">
+          <span className="mr-2">Tags</span>
+          <input
+            className="border border-gray-400 rounded p-1"
+            type="text"
+            placeholder="search"
+            value={searchValue || ""}
+            onChange={(e) => setSearchValue(e.target.value)}
+          />
+        </div>
         <div className="flex flex-col gap-y-2">
-          {groupsByTag?.map((group) => (
-            <div className="border border-gray-400 rounded p-2">
-              <div className="text-pink-500 font-bold text-lg mb-1">
-                {group.tag.name}
+          {groupsByTag?.map((group) =>
+            searchValue !== null && group.tag.name.includes(searchValue) ? (
+              <div
+                key={group.tag.name}
+                className="border border-gray-400 rounded p-2"
+              >
+                <div className="text-pink-500 font-bold text-lg mb-1">
+                  {group.tag.name}
+                </div>
+                <div className="flex flex-col">
+                  {group.bookmarks.map((bookmark) => (
+                    <div key={bookmark.url}>
+                      ・
+                      <a
+                        className="text-blue-500"
+                        href={bookmark.url}
+                        target="__blank"
+                      >
+                        {bookmark.title}
+                      </a>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="flex flex-col">
-                {group.bookmarks.map((bookmark) => (
-                  <div>
-                    ・
-                    <a
-                      className="text-blue-500"
-                      href={bookmark.url}
-                      target="__blank"
-                    >
-                      {bookmark.title}
-                    </a>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
+            ) : null
+          )}
         </div>
       </div>
       <div>
         <div className="mb-2">History</div>
         <div className="flex flex-col gap-y-1">
           {latestBookmarks?.map((bookmark) => (
-            <div className="border border-gray-400 rounded p-2 flex">
+            <div
+              key={bookmark.url}
+              className="border border-gray-400 rounded p-2 flex"
+            >
               <a className="text-blue-500" href={bookmark.url} target="__blank">
                 {bookmark.title}
               </a>
