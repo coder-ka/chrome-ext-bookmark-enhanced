@@ -13,10 +13,25 @@ function Options() {
 
   const [bookmarks, setBookmarks] = useState<Bookmark[]>();
   useEffect(() => {
-    chrome.storage.local.get("bookmarks", (data: LocalData) => {
-      const bookmarks = bookmarkObjToArray(data.bookmarks || {});
-      setBookmarks(bookmarks);
-    });
+    function fetchBookmarks() {
+      chrome.storage.local.get("bookmarks", (data: LocalData) => {
+        const bookmarks = bookmarkObjToArray(data.bookmarks || {});
+        setBookmarks(bookmarks);
+      });
+    }
+
+    fetchBookmarks();
+
+    function onDocumentVisible() {
+      if (document.visibilityState === "visible") {
+        fetchBookmarks();
+      }
+    }
+
+    document.addEventListener("visibilitychange", onDocumentVisible);
+
+    return () =>
+      document.removeEventListener("visibilitychange", onDocumentVisible);
   }, []);
 
   function deleteBookmark(bookmark: Bookmark) {
