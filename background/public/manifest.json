@@ -1,6 +1,6 @@
 {
   "name": "Bookmark Hash",
-  "description": "bookmark sites and group them by hashtags",
+  "description": "bookmarking and hashtagging.",
   "version": "1.0",
   "manifest_version": 3,
   "background": {
