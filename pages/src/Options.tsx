@@ -75,6 +75,8 @@ function Options() {
     }[]
   );
 
+  console.log(groupsByTag);
+
   const url = useRef(new URL(location.href));
 
   const [searchValue, setSearchValue] = useState(
@@ -106,7 +108,7 @@ function Options() {
         </div>
         <div className="flex flex-col gap-y-2">
           {groupsByTag?.map((group) =>
-            searchValue !== null && group.tag.name.includes(searchValue) ? (
+            searchValue === null || group.tag.name.includes(searchValue) ? (
               <div
                 key={group.tag.name}
                 className="border border-gray-400 rounded p-2"
