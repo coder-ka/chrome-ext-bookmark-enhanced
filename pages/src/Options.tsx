@@ -75,8 +75,6 @@ function Options() {
     }[]
   );
 
-  console.log(groupsByTag);
-
   const url = useRef(new URL(location.href));
 
   const [searchValue, setSearchValue] = useState(
